@@ -1,0 +1,124 @@
+<!-- Dashboard Navigation -->
+<nav class="bg-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center py-4">
+            <div class="flex items-center space-x-8">
+                <h1 class="text-xl font-bold text-gray-900">Dashboard</h1>
+                <div class="hidden md:flex space-x-4">
+                    <a href="/dashboard" class="text-primary-600 hover:text-primary-700">Home</a>
+                    <a href="/dashboard/publication" class="text-gray-500 hover:text-gray-700">Publication</a>
+                    <a href="/dashboard/upload" class="text-gray-500 hover:text-gray-700">Upload</a>
+                    <a href="/dashboard/notices" class="text-gray-500 hover:text-gray-700">Notices</a>
+                    <a href="/dashboard/calendar" class="text-gray-500 hover:text-gray-700">Calendar</a>
+                    <a href="/dashboard/weekly-sheets" class="text-gray-500 hover:text-gray-700">Weekly Sheets</a>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="text-sm text-gray-700">Welcome, <%= user.email %></span>
+                <button onclick="logout()" class="btn-secondary text-sm">Logout</button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Dashboard Content -->
+<main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Publication Profile Card -->
+        <div class="card">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-medium text-gray-900">Publication Profile</h3>
+                <div class="text-primary-600 text-2xl">📋</div>
+            </div>
+            <p class="mt-2 text-sm text-gray-600">
+                Set up your publication details and InDesign specifications.
+            </p>
+            <div class="mt-4">
+                <a href="/dashboard/publication" class="btn-primary">Manage Profile</a>
+            </div>
+        </div>
+
+        <!-- Upload Files Card -->
+        <div class="card">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-medium text-gray-900">Upload Files</h3>
+                <div class="text-primary-600 text-2xl">📤</div>
+            </div>
+            <p class="mt-2 text-sm text-gray-600">
+                Upload notices, spec sheets, and pricing documents.
+            </p>
+            <div class="mt-4">
+                <a href="/dashboard/upload" class="btn-primary">Upload Files</a>
+            </div>
+        </div>
+
+        <!-- Notices Card -->
+        <div class="card">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-medium text-gray-900">Public Notices</h3>
+                <div class="text-primary-600 text-2xl">📄</div>
+            </div>
+            <p class="mt-2 text-sm text-gray-600">
+                Manage and convert your public notices.
+            </p>
+            <div class="mt-4">
+                <a href="/dashboard/notices" class="btn-primary">View Notices</a>
+            </div>
+        </div>
+
+        <!-- Calendar Card -->
+        <div class="card">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-medium text-gray-900">Calendar</h3>
+                <div class="text-primary-600 text-2xl">📅</div>
+            </div>
+            <p class="mt-2 text-sm text-gray-600">
+                Schedule publication dates for your notices.
+            </p>
+            <div class="mt-4">
+                <a href="/dashboard/calendar" class="btn-primary">View Calendar</a>
+            </div>
+        </div>
+
+        <!-- Weekly Sheets Card -->
+        <div class="card">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-medium text-gray-900">Weekly Sheets</h3>
+                <div class="text-primary-600 text-2xl">📊</div>
+            </div>
+            <p class="mt-2 text-sm text-gray-600">
+                Generate weekly compilation sheets automatically.
+            </p>
+            <div class="mt-4">
+                <a href="/dashboard/weekly-sheets" class="btn-primary">Generate Sheets</a>
+            </div>
+        </div>
+
+        <!-- Files Card -->
+        <div class="card">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-medium text-gray-900">File Manager</h3>
+                <div class="text-primary-600 text-2xl">📁</div>
+            </div>
+            <p class="mt-2 text-sm text-gray-600">
+                Browse and manage all your uploaded files.
+            </p>
+            <div class="mt-4">
+                <a href="/dashboard/files" class="btn-primary">Browse Files</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+async function logout() {
+    try {
+        await fetch('/api/auth/logout', { method: 'POST' });
+        window.location.href = '/';
+    } catch (error) {
+        console.error('Logout error:', error);
+        // Fallback - redirect anyway
+        window.location.href = '/';
+    }
+}
+</script>

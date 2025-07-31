@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String
+  name          String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  publication   Publication?
+  notices       PublicNotice[]
+}
+
+model Publication {
+  id              String    @id @default(cuid())
+  name            String
+  address         String?
+  phone           String?
+  email           String?
+  website         String?
+  specSheetPath   String?
+  pricingSheetPath String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  userId          String    @unique
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  notices         PublicNotice[]
+  weeklySheets    WeeklySheet[]
+}
+
+model PublicNotice {
+  id              String    @id @default(cuid())
+  title           String
+  content         String
+  originalFilePath String
+  convertedFilePath String?
+  scheduledDate   DateTime
+  status          String @default("PENDING")
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  publicationId   String
+  publication     Publication @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+  weeklySheets    WeeklySheetNotice[]
+}
+
+model WeeklySheet {
+  id              String    @id @default(cuid())
+  weekStart       DateTime
+  weekEnd         DateTime
+  generatedPath   String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  publicationId   String
+  publication     Publication @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+  notices         WeeklySheetNotice[]
+}
+
+model WeeklySheetNotice {
+  id              String    @id @default(cuid())
+  
+  weeklySheetId   String
+  weeklySheet     WeeklySheet @relation(fields: [weeklySheetId], references: [id], onDelete: Cascade)
+  noticeId        String
+  notice          PublicNotice @relation(fields: [noticeId], references: [id], onDelete: Cascade)
+  
+  @@unique([weeklySheetId, noticeId])
+}
+
